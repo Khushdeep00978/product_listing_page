@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>assignment 2 - Product Page</title>
+    <style>
+        
+        body { font-family: sans-serif; padding: 15px; background-color: #f9f9f9; }
+        
+        .filter-bar { 
+            background: #e2e2e2; 
+            padding: 15px; 
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .product-item { 
+            border: 1px solid #aaa; 
+            width: 190px; 
+            margin: 8px; 
+            padding: 12px; 
+            display: inline-block; 
+            background: white;
+            vertical-align: top;
+        }
+
+        .price-text { color: darkred; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="filter-bar">
+        <b>Select Category:</b>
+        <select id="my_cat" onchange="run_everything()">
+            <option value="all">Display All</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Office">Office</option>
+            <option value="Clothes">Clothes</option>
+        </select>
+
+        <b>Sort Result:</b>
+        <select id="my_sort" onchange="run_everything()">
+            <option value="none">--Choose--</option>
+            <option value="p_low">Price (Low to High)</option>
+            <option value="p_high">Price (High to Low)</option>
+            <option value="r_best">Top Rated</option>
+            <option value="n_az">Name (A-Z)</option>
+        </select>
+    </div>
+
+    <div id="product_list"></div>
+
+    <script>
+        var data = [
+            { name: "Organic Apples", price: 5, rating: 4.8, category: "Grocery" },
+            { name: "Blue Jeans", price: 40, rating: 4.2, category: "Clothes" },
+            { name: "Ballpoint Pens", price: 3, rating: 4.0, category: "Office" },
+            { name: "Whole Milk", price: 4, rating: 4.5, category: "Grocery" },
+            { name: "Cotton Hoodie", price: 35, rating: 4.6, category: "Clothes" },
+            { name: "Spiral Notebook", price: 6, rating: 4.3, category: "Office" },
+            { name: "Peanut Butter", price: 8, rating: 4.7, category: "Grocery" },
+            { name: "T-Shirt White", price: 15, rating: 3.9, category: "Clothes" },
+            { name: "Stapler", price: 12, rating: 4.1, category: "Office" },
+            { name: "Brown Rice", price: 10, rating: 4.4, category: "Grocery" },
+            { name: "Winter Scarf", price: 18, rating: 4.5, category: "Clothes" },
+            { name: "Paper Clips", price: 2, rating: 3.8, category: "Office" },
+            { name: "Orange Juice", price: 7, rating: 4.2, category: "Grocery" },
+            { name: "Leather Belt", price: 25, rating: 4.0, category: "Clothes" },
+            { name: "Desk Calendar", price: 14, rating: 4.6, category: "Office" },
+            { name: "Loaf of Bread", price: 3, rating: 4.1, category: "Grocery" },
+            { name: "Canvas Shoes", price: 50, rating: 4.3, category: "Clothes" },
+            { name: "Sticky Notes", price: 5, rating: 4.7, category: "Office" },
+            { name: "Cereal Box", price: 9, rating: 4.0, category: "Grocery" },
+            { name: "Glue Stick", price: 1, rating: 4.4, category: "Office" }
+        ];
+
+        function show_items(list) {
+            var box = document.getElementById("product_list");
+            box.innerHTML = ""; 
+            
+            for (var i = 0; i < list.length; i++) {
+                var item = list[i];
+                box.innerHTML += "<div class='product-item'>" +
+                    "<h3>" + item.name + "</h3>" +
+                    "<p>Cat: " + item.category + "</p>" +
+                    "<p class='price-text'>Price: $" + item.price + "</p>" +
+                    "<p>Rating: " + item.rating + " / 5</p>" +
+                    "</div>";
+            }
+        }
+
+        function run_everything() {
+            var c_val = document.getElementById("my_cat").value;
+            var s_val = document.getElementById("my_sort").value;
+
+            var filtered = [];
+            for (var j = 0; j < data.length; j++) {
+                if (c_val == "all" || data[j].category == c_val) {
+                    filtered.push(data[j]);
+                }
+            }
+
+            if (s_val == "p_low") {
+                filtered.sort((a, b) => a.price - b.price);
+            } else if (s_val == "p_high") {
+                filtered.sort((a, b) => b.price - a.price);
+            } else if (s_val == "r_best") {
+                filtered.sort((a, b) => b.rating - a.rating);
+            } else if (s_val == "n_az") {
+                filtered.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            show_items(filtered);
+        }
+
+        show_items(data);
+    </script>
+</body>
+</html>
